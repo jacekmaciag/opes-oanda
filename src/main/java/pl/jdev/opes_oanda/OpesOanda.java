@@ -10,5 +10,4 @@ public class OpesOanda {
     public static void main(String[] args) {
         SpringApplication.run(OpesOanda.class, args);
     }
-
 }
