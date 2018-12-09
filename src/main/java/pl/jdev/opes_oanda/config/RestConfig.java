@@ -76,7 +76,8 @@ public class RestConfig {
     @DependsOn({"restTemplate"})
     @Autowired
     IntegrationClient integrationClient(RestTemplate restTemplate,
-                                        @Value("${opes.integration.host}") String integrationHostUrl) {
-        return new IntegrationClient(restTemplate, integrationHostUrl);
+                                        @Value("${opes.integration.host}") String integrationHostUrl,
+                                        @Value("${opes.integration.version}") String integrationVersion) {
+        return new IntegrationClient(restTemplate, integrationHostUrl + integrationVersion);
     }
 }

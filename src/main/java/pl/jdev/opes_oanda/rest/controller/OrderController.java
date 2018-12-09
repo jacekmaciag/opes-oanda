@@ -1,43 +1,43 @@
 package pl.jdev.opes_oanda.rest.controller;
 
-import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.jdev.opes_commons.domain.order.Order;
 import pl.jdev.opes_commons.rest.HttpHeaders;
-import pl.jdev.opes_commons.rest.message.CreateOrderRequest;
+import pl.jdev.opes_commons.rest.message.CancelOrderAction;
+import pl.jdev.opes_commons.rest.message.CreateOrderAction;
 import pl.jdev.opes_commons.rest.message.EntityDetailsRequest;
 import pl.jdev.opes_commons.rest.wrapper.JsonOrderListWrapper;
 import pl.jdev.opes_commons.rest.wrapper.JsonOrderWrapper;
+import pl.jdev.opes_oanda.rest.service.OandaOrderService;
 
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.UUID;
 
 import static pl.jdev.opes_commons.rest.HttpHeaders.DATA_TYPE;
-import static pl.jdev.opes_commons.rest.HttpHeaders.EVENT_TYPE;
 
 @RestController
 @RequestMapping("/orders")
 public class OrderController extends AbstractEntityController<Order> {
+    @Autowired
+    OandaOrderService oandaOrderService;
 
     @PostMapping
-    public void createOrder(@Valid @RequestBody final CreateOrderRequest createOrderRequest) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(EVENT_TYPE, "createOrder");
-        integrationClient.perform(createOrderRequest, headers);
+    public void createOrder(@Valid @RequestBody final CreateOrderAction createOrderAction) {
+//oandaOrderService.postOrder(createOrderRequest)
+    }
+
+    @PutMapping
+    public void cancelOrder(@Valid @RequestBody final CancelOrderAction cancelOrderAction) {
+        oandaOrderService.cancelOrder(cancelOrderAction.getExtAccountId(), cancelOrderAction.getExtOrderId());
     }
 
     @GetMapping
     @ResponseBody
     public JsonOrderListWrapper getAllOrders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(DATA_TYPE, "order");
-        return JsonOrderListWrapper.payloadOf(
-                (Collection<Order>) integrationClient.requestData(
-                        new EntityDetailsRequest(),
-                        headers
-                ).getBody()
-        );
+
+//        oandaOrderService.getAllOrders();
+        return null;
     }
 
     @GetMapping("/{orderId}")
@@ -49,7 +49,8 @@ public class OrderController extends AbstractEntityController<Order> {
         return JsonOrderWrapper.payloadOf(
                 (Order) integrationClient.requestData(
                         new EntityDetailsRequest(orderId, orderId.toString()),
-                        headers
+                        headers,
+                        JsonOrderWrapper.class
                 ).getBody()
         );
     }

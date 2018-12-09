@@ -7,6 +7,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:oanda.url")
 public class Url {
+    @Value("${oanda.url.base.practice}")
+    public String OANDA_HOST;
     @Value("${oanda.url.account.all}")
     public String ACCOUNT_LIST_URL;
     @Value("${oanda.url.account.single}")

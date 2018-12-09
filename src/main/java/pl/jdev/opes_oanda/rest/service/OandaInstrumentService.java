@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import pl.jdev.opes_commons.domain.instrument.Candlestick;
 import pl.jdev.opes_commons.domain.instrument.CandlestickGranularity;
 import pl.jdev.opes_commons.domain.instrument.CandlestickPriceType;
@@ -14,9 +15,9 @@ import pl.jdev.opes_oanda.config.Url;
 import java.util.Collection;
 
 import static java.util.Objects.requireNonNull;
+import static javax.print.attribute.standard.ReferenceUriSchemesSupported.HTTPS;
 import static org.springframework.http.HttpEntity.EMPTY;
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 @Service
 @Log4j2(topic = "CORE - Instrument")
@@ -28,11 +29,21 @@ public class OandaInstrumentService extends AbstractOandaService<Candlestick> {
         super(restTemplate, url);
     }
 
-    public Collection<Candlestick> getCandlestickList(String instrument,
-                                                      CandlestickPriceType priceType,
-                                                      CandlestickGranularity granularity,
-                                                      int count) {
-        return this.getCandlestickList(fromPath(url.CANDLES)
+    //UriComponentsBuilder.newInstance()
+    //                                .scheme(ReferenceUriSchemesSupported.HTTP.toString())
+    //                                .host(integrationHost)
+    //                                .path("/data")
+    //                                .build()
+    //                                .toString(
+
+    public Collection<Candlestick> getCandlestickList(final String instrument,
+                                                      final CandlestickPriceType priceType,
+                                                      final CandlestickGranularity granularity,
+                                                      final int count) {
+        return this.getCandlestickList(UriComponentsBuilder.newInstance()
+                .scheme(HTTPS.toString())
+                .host(url.OANDA_HOST)
+                .path(url.CANDLES)
                 .queryParam("price", priceType)
                 .queryParam("granularity", granularity)
                 .queryParam("count", count)
@@ -40,12 +51,15 @@ public class OandaInstrumentService extends AbstractOandaService<Candlestick> {
                 .toString());
     }
 
-    public Collection<Candlestick> getCandlestickList(String instrument,
-                                                      CandlestickPriceType priceType,
-                                                      CandlestickGranularity granularity,
-                                                      String from,
-                                                      String to) {
-        return this.getCandlestickList(fromPath(url.CANDLES)
+    public Collection<Candlestick> getCandlestickList(final String instrument,
+                                                      final CandlestickPriceType priceType,
+                                                      final CandlestickGranularity granularity,
+                                                      final String from,
+                                                      final String to) {
+        return this.getCandlestickList(UriComponentsBuilder.newInstance()
+                .scheme(HTTPS.toString())
+                .host(url.OANDA_HOST)
+                .path(url.CANDLES)
                 .queryParam("price", priceType)
                 .queryParam("granularity", granularity)
                 .queryParam("from", from)
@@ -54,7 +68,7 @@ public class OandaInstrumentService extends AbstractOandaService<Candlestick> {
                 .toString());
     }
 
-    private Collection<Candlestick> getCandlestickList(String uri) {
+    private Collection<Candlestick> getCandlestickList(final String uri) {
         return requireNonNull(this.restTemplate
                 .exchange(uri,
                         GET,
