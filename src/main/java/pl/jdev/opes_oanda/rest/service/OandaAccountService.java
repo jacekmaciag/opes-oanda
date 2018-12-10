@@ -6,8 +6,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import pl.jdev.opes_commons.domain.account.Account;
-import pl.jdev.opes_commons.rest.wrapper.JsonAccountListWrapper;
-import pl.jdev.opes_commons.rest.wrapper.JsonAccountWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonAccountListWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonAccountWrapper;
 import pl.jdev.opes_oanda.config.Url;
 
 import java.util.ArrayList;

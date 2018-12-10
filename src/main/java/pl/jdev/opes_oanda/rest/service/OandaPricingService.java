@@ -7,7 +7,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import pl.jdev.opes_commons.domain.pricing.Price;
-import pl.jdev.opes_commons.rest.wrapper.JsonPricingListWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonPricingListWrapper;
 import pl.jdev.opes_oanda.config.Url;
 
 import java.util.Collection;

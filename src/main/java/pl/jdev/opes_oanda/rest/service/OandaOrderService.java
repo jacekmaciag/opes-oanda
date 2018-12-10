@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import pl.jdev.opes_commons.domain.order.Order;
 import pl.jdev.opes_commons.domain.order.OrderRequest;
-import pl.jdev.opes_commons.rest.wrapper.JsonOrderListWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonOrderListWrapper;
 import pl.jdev.opes_oanda.config.Url;
 
 import java.util.List;

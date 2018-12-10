@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import pl.jdev.opes_commons.domain.ClientExtensions;
 import pl.jdev.opes_commons.domain.trade.Trade;
-import pl.jdev.opes_commons.rest.wrapper.JsonTradeListWrapper;
-import pl.jdev.opes_commons.rest.wrapper.JsonTradeWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonTradeListWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonTradeWrapper;
 import pl.jdev.opes_oanda.config.Url;
 
 import java.util.List;

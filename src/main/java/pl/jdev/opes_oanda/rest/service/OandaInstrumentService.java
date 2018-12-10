@@ -9,7 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import pl.jdev.opes_commons.domain.instrument.Candlestick;
 import pl.jdev.opes_commons.domain.instrument.CandlestickGranularity;
 import pl.jdev.opes_commons.domain.instrument.CandlestickPriceType;
-import pl.jdev.opes_commons.rest.wrapper.JsonCandlestickListWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonCandlestickListWrapper;
 import pl.jdev.opes_oanda.config.Url;
 
 import java.util.Collection;
