@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.jdev.opes_commons.domain.instrument.CandlestickGranularity;
 import pl.jdev.opes_commons.domain.instrument.CandlestickPriceType;
 import pl.jdev.opes_commons.domain.instrument.Instrument;
-import pl.jdev.opes_commons.rest.wrapper.JsonCandlestickListWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonCandlestickListWrapper;
 import pl.jdev.opes_oanda.rest.service.OandaInstrumentService;
 
 @RestController

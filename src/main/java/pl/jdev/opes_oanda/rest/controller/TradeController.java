@@ -3,9 +3,9 @@ package pl.jdev.opes_oanda.rest.controller;
 import org.springframework.web.bind.annotation.*;
 import pl.jdev.opes_commons.domain.trade.Trade;
 import pl.jdev.opes_commons.rest.HttpHeaders;
-import pl.jdev.opes_commons.rest.message.EntityDetailsRequest;
-import pl.jdev.opes_commons.rest.wrapper.JsonTradeListWrapper;
-import pl.jdev.opes_commons.rest.wrapper.JsonTradeWrapper;
+import pl.jdev.opes_commons.rest.message.request.EntityDetailsRequest;
+import pl.jdev.opes_commons.rest.message.response.JsonTradeListWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonTradeWrapper;
 
 import javax.validation.Valid;
 import java.util.Collection;

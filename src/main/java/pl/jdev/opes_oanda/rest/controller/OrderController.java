@@ -6,9 +6,9 @@ import pl.jdev.opes_commons.domain.order.Order;
 import pl.jdev.opes_commons.rest.HttpHeaders;
 import pl.jdev.opes_commons.rest.message.CancelOrderAction;
 import pl.jdev.opes_commons.rest.message.CreateOrderAction;
-import pl.jdev.opes_commons.rest.message.EntityDetailsRequest;
-import pl.jdev.opes_commons.rest.wrapper.JsonOrderListWrapper;
-import pl.jdev.opes_commons.rest.wrapper.JsonOrderWrapper;
+import pl.jdev.opes_commons.rest.message.request.EntityDetailsRequest;
+import pl.jdev.opes_commons.rest.message.response.JsonOrderListWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonOrderWrapper;
 import pl.jdev.opes_oanda.rest.service.OandaOrderService;
 
 import javax.validation.Valid;

@@ -3,8 +3,8 @@ package pl.jdev.opes_oanda.rest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.jdev.opes_commons.domain.account.Account;
-import pl.jdev.opes_commons.rest.wrapper.JsonAccountListWrapper;
-import pl.jdev.opes_commons.rest.wrapper.JsonAccountWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonAccountListWrapper;
+import pl.jdev.opes_commons.rest.message.response.JsonAccountWrapper;
 import pl.jdev.opes_oanda.rest.service.OandaAccountService;
 
 @RestController
