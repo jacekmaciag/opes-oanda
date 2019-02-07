@@ -5,7 +5,7 @@ import org.springframework.web.client.RestTemplate;
 import pl.jdev.opes_commons.domain.position.Position;
 import pl.jdev.opes_oanda.config.Url;
 
-public class OandaPositionService extends AbstractOandaService<Position> {
+public class OandaPositionService extends AbstractOandaService {
     @Autowired
     public OandaPositionService(RestTemplate restTemplate,
                                 Url url) {

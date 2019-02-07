@@ -1,16 +1,19 @@
 package pl.jdev.opes_oanda.config;
 
+import org.modelmapper.Conditions;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import pl.jdev.opes_commons.rest.IntegrationClient;
 import pl.jdev.opes_commons.rest.interceptor.AuthInterceptor;
@@ -20,6 +23,7 @@ import pl.jdev.opes_commons.rest.interceptor.UserAgentInterceptor;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -30,11 +34,10 @@ public class RestConfig {
     @DependsOn({"requestFactory"})
     @Autowired
     RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder,
-                              List<ClientHttpRequestInterceptor> restInterceptors,
-                              MappingJackson2HttpMessageConverter messageConverter) {
+                              List<ClientHttpRequestInterceptor> restInterceptors) {
         RestTemplate rt = restTemplateBuilder
                 .additionalInterceptors(restInterceptors)
-                .messageConverters(messageConverter)
+                .messageConverters(new StringHttpMessageConverter())
                 .build();
         rt.setRequestFactory(requestFactory());
         return rt;
@@ -79,5 +82,18 @@ public class RestConfig {
                                         @Value("${opes.integration.host}") String integrationHostUrl,
                                         @Value("${opes.integration.version}") String integrationVersion) {
         return new IntegrationClient(restTemplate, integrationHostUrl + integrationVersion);
+    }
+
+    @Bean
+    @Scope(SCOPE_PROTOTYPE)
+    public ModelMapper modelMapper() {
+        ModelMapper mapper = new ModelMapper();
+        //TODO: will probably need to be changed after mappings are working.
+        mapper.getConfiguration()
+                .setPropertyCondition(Conditions.isNotNull());
+        mapper.getConfiguration()
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+        return mapper;
     }
 }

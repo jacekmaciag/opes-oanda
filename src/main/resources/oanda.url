@@ -4,8 +4,8 @@ oanda.url.host.live=api-fxtrade.oanda.com
 oanda.url.host.practice=api-fxpractice.oanda.com
 oanda.url.api_version=v3
 oanda.url.base.live=${oanda.url.scheme}://${oanda.url.host.live}/${oanda.url.api_version}
-oanda.url.base.practice=api-fxpractice.oanda.com/v3
-  #Account endpoints
+oanda.url.base.practice=${oanda.url.host.practice}/${oanda.url.api_version}
+  #OandaAccount endpoints
 oanda.url.account.all=/accounts
 oanda.url.account.single=${oanda.url.account.all}/{accountId}
 oanda.url.account.summary=${oanda.url.account.single}/summary
@@ -30,7 +30,7 @@ oanda.url.instrument.position_book=/instruments/{instrument}/positionBook
   #Pricing endpoints
 oanda.url.pricing.list=${oanda.url.account.single}/pricing
 oanda.url.pricing.stream=${oanda.url.pricing.list}/stream
-  #Order endpoints
+  #OandaOrder endpoints
 oanda.url.account.order.list=${oanda.url.account.single}/orders
 oanda.url.account.order.pending=${oanda.url.account.single}/pendingOrders
 oanda.url.account.order.single=${oanda.url.account.order.list}/{orderpecifier}

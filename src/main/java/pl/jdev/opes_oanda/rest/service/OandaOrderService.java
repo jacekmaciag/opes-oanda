@@ -19,8 +19,8 @@ import static org.springframework.http.HttpMethod.*;
 import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 @Component
-@Log4j2(topic = "CORE - Order")
-public class OandaOrderService extends AbstractOandaService<Order> {
+@Log4j2(topic = "CORE - OandaOrder")
+public class OandaOrderService extends AbstractOandaService {
     @Autowired
     public OandaOrderService(RestTemplate restTemplate,
                              Url url) {

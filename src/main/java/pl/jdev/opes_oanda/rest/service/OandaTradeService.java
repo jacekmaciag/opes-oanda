@@ -23,7 +23,7 @@ import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 @Component
 @Log4j2(topic = "CORE - Trade")
-public class OandaTradeService extends AbstractOandaService<Trade> {
+public class OandaTradeService extends AbstractOandaService {
 
     @Autowired
     public OandaTradeService(RestTemplate restTemplate, Url url) {

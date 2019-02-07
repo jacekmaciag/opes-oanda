@@ -4,13 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.jdev.opes_commons.domain.instrument.CandlestickGranularity;
 import pl.jdev.opes_commons.domain.instrument.CandlestickPriceType;
-import pl.jdev.opes_commons.domain.instrument.Instrument;
 import pl.jdev.opes_commons.rest.message.response.JsonCandlestickListWrapper;
 import pl.jdev.opes_oanda.rest.service.OandaInstrumentService;
 
 @RestController
 @RequestMapping("/instruments/{instrument}/")
-public class InstrumentController extends AbstractEntityController<Instrument> {
+public class InstrumentController {
     @Autowired
     OandaInstrumentService oandaInstrumentService;
 

@@ -1,14 +1,17 @@
 package pl.jdev.opes_oanda.rest.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.jdev.opes_commons.domain.trade.Trade;
 import pl.jdev.opes_commons.rest.HttpHeaders;
+import pl.jdev.opes_commons.rest.IntegrationClient;
 import pl.jdev.opes_commons.rest.message.request.EntityDetailsRequest;
 import pl.jdev.opes_commons.rest.message.response.JsonTradeListWrapper;
 import pl.jdev.opes_commons.rest.message.response.JsonTradeWrapper;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static pl.jdev.opes_commons.rest.HttpHeaders.ACTION_TYPE;
@@ -16,7 +19,9 @@ import static pl.jdev.opes_commons.rest.HttpHeaders.DATA_TYPE;
 
 @RestController
 @RequestMapping("/trades")
-public class TradeController extends AbstractEntityController<Trade> {
+public class TradeController {
+    @Autowired
+    IntegrationClient integrationClient;
 
     @GetMapping
     @ResponseBody
@@ -26,8 +31,7 @@ public class TradeController extends AbstractEntityController<Trade> {
         return JsonTradeListWrapper.payloadOf(
                 (Collection<Trade>) integrationClient.requestData(
                         new EntityDetailsRequest(),
-                        headers,
-                        JsonTradeListWrapper.class
+                        List.class
                 ).getBody()
         );
     }
@@ -41,8 +45,7 @@ public class TradeController extends AbstractEntityController<Trade> {
         return JsonTradeListWrapper.payloadOf(
                 (Collection<Trade>) integrationClient.requestData(
                         new EntityDetailsRequest(),
-                        headers,
-                        JsonTradeListWrapper.class
+                        List.class
                 ).getBody()
         );
     }
@@ -54,9 +57,8 @@ public class TradeController extends AbstractEntityController<Trade> {
         headers.add(DATA_TYPE, "trade");
         return JsonTradeWrapper.payloadOf(
                 (Trade) integrationClient.requestData(
-                        new EntityDetailsRequest(tradeId, tradeId.toString()),
-                        headers,
-                        JsonTradeWrapper.class
+                        new EntityDetailsRequest(tradeId),
+                        Trade.class
                 ).getBody()
         );
     }

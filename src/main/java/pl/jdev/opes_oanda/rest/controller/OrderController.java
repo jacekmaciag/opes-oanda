@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.jdev.opes_commons.domain.order.Order;
 import pl.jdev.opes_commons.rest.HttpHeaders;
+import pl.jdev.opes_commons.rest.IntegrationClient;
 import pl.jdev.opes_commons.rest.message.CancelOrderAction;
 import pl.jdev.opes_commons.rest.message.CreateOrderAction;
 import pl.jdev.opes_commons.rest.message.request.EntityDetailsRequest;
@@ -18,9 +19,11 @@ import static pl.jdev.opes_commons.rest.HttpHeaders.DATA_TYPE;
 
 @RestController
 @RequestMapping("/orders")
-public class OrderController extends AbstractEntityController<Order> {
+public class OrderController {
     @Autowired
     OandaOrderService oandaOrderService;
+    @Autowired
+    IntegrationClient integrationClient;
 
     @PostMapping
     public void createOrder(@Valid @RequestBody final CreateOrderAction createOrderAction) {
@@ -48,9 +51,8 @@ public class OrderController extends AbstractEntityController<Order> {
         headers.add(DATA_TYPE, "order");
         return JsonOrderWrapper.payloadOf(
                 (Order) integrationClient.requestData(
-                        new EntityDetailsRequest(orderId, orderId.toString()),
-                        headers,
-                        JsonOrderWrapper.class
+                        new EntityDetailsRequest(orderId),
+                        Order.class
                 ).getBody()
         );
     }

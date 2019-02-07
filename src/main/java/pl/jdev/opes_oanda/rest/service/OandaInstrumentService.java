@@ -21,7 +21,7 @@ import static org.springframework.http.HttpMethod.GET;
 
 @Service
 @Log4j2(topic = "CORE - Instrument")
-public class OandaInstrumentService extends AbstractOandaService<Candlestick> {
+public class OandaInstrumentService extends AbstractOandaService {
 
     @Autowired
     public OandaInstrumentService(RestTemplate restTemplate,

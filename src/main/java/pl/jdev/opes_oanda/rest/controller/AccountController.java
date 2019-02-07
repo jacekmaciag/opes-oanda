@@ -3,25 +3,26 @@ package pl.jdev.opes_oanda.rest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.jdev.opes_commons.domain.account.Account;
-import pl.jdev.opes_commons.rest.message.response.JsonAccountListWrapper;
-import pl.jdev.opes_commons.rest.message.response.JsonAccountWrapper;
 import pl.jdev.opes_oanda.rest.service.OandaAccountService;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
-public class AccountController extends AbstractEntityController<Account> {
+public class AccountController {
     @Autowired
-    OandaAccountService oandaAccountService;
+    private OandaAccountService oandaAccountService;
 
     @GetMapping
     @ResponseBody
-    public JsonAccountListWrapper getAllAccounts() {
-        return JsonAccountListWrapper.payloadOf(oandaAccountService.getAllAccounts());
+    public List<Account> getAllAccounts() {
+        return (List<Account>) oandaAccountService.getAllAccounts();
     }
 
     @GetMapping("/{accountId}")
     @ResponseBody
-    public JsonAccountWrapper getAccount(@PathVariable final String accountId) {
-        return JsonAccountWrapper.payloadOf(oandaAccountService.getAccount(accountId));
+    public Account getAccount(@PathVariable final String accountId) throws IOException {
+        return oandaAccountService.getAccount(accountId);
     }
 }

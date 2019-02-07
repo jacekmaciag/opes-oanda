@@ -19,7 +19,7 @@ import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 @Component
 @Log4j2(topic = "CORE - Pricing")
-public class OandaPricingService extends AbstractOandaService<Price> {
+public class OandaPricingService extends AbstractOandaService {
     @Autowired
     ApplicationContext ctx;
 

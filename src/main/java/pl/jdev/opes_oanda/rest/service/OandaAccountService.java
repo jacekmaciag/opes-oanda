@@ -1,25 +1,30 @@
 package pl.jdev.opes_oanda.rest.service;
 
-import lombok.extern.log4j.Log4j2;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import pl.jdev.opes_commons.domain.account.Account;
-import pl.jdev.opes_commons.rest.message.response.JsonAccountListWrapper;
-import pl.jdev.opes_commons.rest.message.response.JsonAccountWrapper;
+import pl.jdev.opes_commons.domain.broker.BrokerName;
 import pl.jdev.opes_oanda.config.Url;
+import pl.jdev.opes_oanda.domain.account.OandaAccount;
+import pl.jdev.opes_oanda.mapper.OandaAccountMapper;
 
-import java.util.ArrayList;
+import javax.print.attribute.standard.ReferenceUriSchemesSupported;
+import java.io.IOException;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpEntity.EMPTY;
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 @Component
-@Log4j2(topic = "CORE - Account")
-public class OandaAccountService extends AbstractOandaService<Account> {
+//@Log4j2(topic = "CORE - OandaAccount")
+public class OandaAccountService extends AbstractOandaService {
+    @Autowired
+    private OandaAccountMapper mapper;
 
     @Autowired
     public OandaAccountService(RestTemplate restTemplate,
@@ -33,18 +38,21 @@ public class OandaAccountService extends AbstractOandaService<Account> {
      * @return all accounts with details
      */
     public Collection<Account> getAllAccounts() {
-        Collection<Account> accountList = new ArrayList<>();
-        this.restTemplate
-                .exchange(url.ACCOUNT_LIST_URL,
+        Collection<OandaAccount> accountList = this.restTemplate
+                .exchange(UriComponentsBuilder.newInstance()
+                                .scheme(ReferenceUriSchemesSupported.HTTPS.toString())
+                                .host(url.OANDA_HOST)
+                                .path(url.ACCOUNT_LIST_URL)
+                                .build()
+                                .toString(),
                         GET,
-                        new HttpEntity<>(EMPTY, null),
-                        JsonAccountListWrapper.class)
-                .getBody()
-                .getAccounts()
-                .forEach(account -> {
-                    accountList.add(getAccount(account.getAccountId()));
-                });
-        return accountList;
+                        null,
+                        Collection.class)
+                .getBody();
+        return accountList.stream()
+                .map(entity -> mapper.convertToEntity(entity))
+                .map(this::labelAccount)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -53,14 +61,38 @@ public class OandaAccountService extends AbstractOandaService<Account> {
      * @return accounts with details for provided id
      */
     public Account getAccount(String accountId) {
-        return this.restTemplate
-                .exchange(fromPath(url.SINGLE_ACCOUNT_URL)
+        ResponseEntity<String> responseEntity = this.restTemplate
+                .exchange(UriComponentsBuilder.newInstance()
+                                .scheme(ReferenceUriSchemesSupported.HTTPS.toString())
+                                .host(url.OANDA_HOST)
+                                .path(url.SINGLE_ACCOUNT_URL)
                                 .buildAndExpand(accountId)
                                 .toString(),
                         GET,
-                        new HttpEntity<>(EMPTY, null),
-                        JsonAccountWrapper.class)
-                .getBody()
-                .getAccount();
+                        null,
+                        String.class);
+        OandaAccount oandaAccount = (OandaAccount) parseToEntity(responseEntity.getBody());
+        Account account = mapper.convertToEntity(oandaAccount);
+        return labelAccount(account);
+    }
+
+    private Account labelAccount(Account account) {
+        account.setBroker(BrokerName.OANDA);
+        return account;
+    }
+
+    private Object parseToEntity(String responseBody) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode json = null;
+        OandaAccount account = null;
+        try {
+            json = mapper.readTree(responseBody);
+            long lastTransactionId = json.get("lastTransactionID").asLong();
+            JsonNode accountNode = json.get("account");
+            account = mapper.treeToValue(accountNode, OandaAccount.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return account;
     }
 }
