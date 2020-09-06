@@ -1,0 +1,12 @@
+name: oanda-test
+auth: Bearer
+url:
+  scheme: https
+  host: api-fxpractice.oanda.com
+endpoints:
+  - type: ACCOUNT_DETAILS
+    method: GET
+    path: /accounts/{accountId}
+  - type: PRICING
+    method: GET
+    path: /accounts/{accountId}/pricing
